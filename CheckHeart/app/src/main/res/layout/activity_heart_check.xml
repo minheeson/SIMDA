@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.sonminhee.checkheart.activity.HeartCheckActivity">
+
+    <LinearLayout
+        android:id="@+id/main_linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <!-- 심박수 그래프 -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:gyjmoble="http://schemas.android.com/apk/res/com.example.sonminhee.checkheart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <com.example.sonminhee.checkheart.util.GraphView
+                android:id="@+id/GraphView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                gyjmoble:lineColor="#0073cc"
+                gyjmoble:lineThickness="2dp"
+                gyjmoble:pointColor="#ec4800"
+                gyjmoble:pointSize="8dp" />
+
+        </LinearLayout>
+
+        <!-- 심박수 숫자 -->
+        <TextView
+            android:id="@+id/main_heartRate"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="현재 심박 수 : 131"
+            android:textSize="20sp" />
+
+        <!-- 사용자 상태 -->
+        <ImageView
+            android:id="@+id/main_userStateImage"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="5"
+            android:background="@drawable/back"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/main_userState"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="나의 상태" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_Longitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Longitude" />
+
+                <EditText
+                    android:id="@+id/et_Longitude"
+                    android:layout_width="fill_parent"
+                    android:background="#f777"
+                    android:editable="false"
+                    android:textColor="#ffffff"
+                    android:textSize="16px"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_Latitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Latitude" />
+
+                <EditText
+                    android:id="@+id/et_Latitude"
+                    android:layout_width="fill_parent"
+                    android:background="#f777"
+                    android:editable="false"
+                    android:textColor="#ffffff"
+                    android:textSize="16px"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/main_popup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="팝업(임시)" />
+
+        <Button
+            android:id="@+id/btn_AudioActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="음악 듣기" />
+    </LinearLayout>
+
+</RelativeLayout>
