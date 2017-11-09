@@ -1,6 +1,9 @@
 package com.example.sonminhee.checkheart.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,17 +16,26 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.sonminhee.checkheart.util.BluetoothSerialClient;
 import com.example.sonminhee.checkheart.util.EcallDialog;
 import com.example.sonminhee.checkheart.util.GraphView;
 import com.example.sonminhee.checkheart.util.MyLocationListener;
 import com.example.sonminhee.checkheart.R;
 
+import java.util.LinkedList;
+
 public class HeartCheckActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "HeartCheckActivity";
+    private static final String TAB_BT = "Bluetooth";
 
     Button btnAudioActivity;
     GraphView graphView;
@@ -42,7 +54,20 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     public EditText txtLongitude;
     public Intent intent_dial;
     public MyLocationListener locListenD;
-    Button btn;
+    Button btn; // TODO :: 이거 무슨 버튼이람?
+
+    // TODO :: refactor var
+    private LinkedList<BluetoothDevice> mBluetoothDevices = new LinkedList<BluetoothDevice>();
+    private ArrayAdapter<String> mDeviceArrayAdapter;
+
+    private EditText mEditTextInput;
+    private TextView mTextView;
+    private Button mButtonSend;
+    private ProgressDialog mLoadingDialog;
+    private AlertDialog mDeviceListDialog;
+    private Menu mMenu;
+    private BluetoothSerialClient mClient;
+    // -- bluetooth
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +99,25 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
         graphView = (GraphView) findViewById(R.id.GraphView);
 
     }
+
+
+    // TODO :: add bluetooth
+    private void initBluetooth(){
+        mClient = BluetoothSerialClient.getInstance();
+
+        if(mClient == null) {
+            Toast.makeText(getApplicationContext(), "Cannot use the Bluetooth device.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+//        overflowMenuInActionBar();
+//        initProgressDialog();
+//        initDeviceListDialog();
+//        initWidget();
+    }
+
+
+
+
 
     // TODO :: 권한 체크 메소드 분리
     private void checkAuthority() {
