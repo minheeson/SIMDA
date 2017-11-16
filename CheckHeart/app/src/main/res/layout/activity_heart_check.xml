@@ -36,8 +36,9 @@
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_weight="1"
+            android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="현재 심박 수 : 131"
+            android:text="현재 심박 수 : 92"
             android:textSize="20sp" />
 
         <!-- 사용자 상태 -->
@@ -47,6 +48,7 @@
             android:layout_height="0px"
             android:layout_weight="5"
             android:background="@drawable/back"
+            android:src="@drawable/ic_status_fatal"
             android:text="TextView" />
 
         <TextView
@@ -61,58 +63,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<TableRow-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:id="@+id/tv_Longitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Longitude" />
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_Longitude"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Longitude" />-->
 
-                <EditText
-                    android:id="@+id/et_Longitude"
-                    android:layout_width="fill_parent"
-                    android:background="#f777"
-                    android:editable="false"
-                    android:textColor="#ffffff"
-                    android:textSize="16px"
-                    android:textStyle="bold" />
-            </TableRow>
+                <!--<EditText-->
+                    <!--android:id="@+id/et_Longitude"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:background="#f777"-->
+                    <!--android:editable="false"-->
+                    <!--android:textColor="#ffffff"-->
+                    <!--android:textSize="16px"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</TableRow>-->
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<TableRow-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:id="@+id/tv_Latitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Latitude" />
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_Latitude"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Latitude" />-->
 
-                <EditText
-                    android:id="@+id/et_Latitude"
-                    android:layout_width="fill_parent"
-                    android:background="#f777"
-                    android:editable="false"
-                    android:textColor="#ffffff"
-                    android:textSize="16px"
-                    android:textStyle="bold" />
-            </TableRow>
+                <!--<EditText-->
+                    <!--android:id="@+id/et_Latitude"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:background="#f777"-->
+                    <!--android:editable="false"-->
+                    <!--android:textColor="#ffffff"-->
+                    <!--android:textSize="16px"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</TableRow>-->
         </TableLayout>
 
         <Button
             android:id="@+id/main_popup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="팝업(임시)" />
+            android:background="#ececec"
+            android:text="팝업(임시)"
+            android:textColor="@color/colorPrimary" />
 
         <Button
             android:id="@+id/btn_AudioActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="음악 듣기" />
+            android:background="#ececec"
+            android:text="음악 듣기"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
 </RelativeLayout>

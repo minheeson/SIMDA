@@ -91,8 +91,8 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
         btn.setOnClickListener(this);
 
         /** (GPS) 위치 받아오기 */
-        txtLatitude = (EditText) findViewById(R.id.et_Latitude);
-        txtLongitude = (EditText) findViewById(R.id.et_Longitude);
+//        txtLatitude = (EditText) findViewById(R.id.et_Latitude);
+//        txtLongitude = (EditText) findViewById(R.id.et_Longitude);
 
         btnAudioActivity = (Button) findViewById(R.id.btn_AudioActivity);
         btnAudioActivity.setOnClickListener(this);
@@ -102,10 +102,10 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
 
     // TODO :: add bluetooth
-    private void initBluetooth(){
+    private void initBluetooth() {
         mClient = BluetoothSerialClient.getInstance();
 
-        if(mClient == null) {
+        if (mClient == null) {
             Toast.makeText(getApplicationContext(), "Cannot use the Bluetooth device.", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -116,38 +116,36 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-
-
-
     // TODO :: 권한 체크 메소드 분리
     private void checkAuthority() {
         // OS가 M 이상일 경우 권한체크
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             //ACCESS_FINE_LOCATION & ACCESS_COARSE_LOCATION권한 체크
-           if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                   ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                   ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-               ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE}, 1000);
-            }else{
-               // 권한 존재
-           }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE}, 1000);
+            } else {
+                // 권한 존재
+            }
 
         } else {
             // OS가 M 이전일 경우
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        /**
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
             // ACCESS_FINE_LOCATION & ACCESS_COARSE_LOCATION권한 획득
             setGPS(location);
         }
-        if(grantResults[2] == PackageManager.PERMISSION_GRANTED){
+        if (grantResults[2] == PackageManager.PERMISSION_GRANTED) {
             // CALL_PHONE 권한 획득
-        }*/
+        }
     }
 
     @Override
@@ -178,9 +176,9 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
         String SMSText = "Latitude : " + txtLatitude.getText() + "\nLongitude : " + txtLongitude.getText();
         /**
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage("01093493932", null, SMSText, null, null);
-        mCustomDialog.dismiss();*/
+         SmsManager sms = SmsManager.getDefault();
+         sms.sendTextMessage("01093493932", null, SMSText, null, null);
+         mCustomDialog.dismiss();*/
     }
 
     /**
@@ -198,7 +196,7 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
                 if (location != null) {
                     txtLatitude.setText(Double.toString(location.getLatitude()));
                     txtLongitude.setText(Double.toString(location.getLongitude()));
-                }else{
+                } else {
                     locListenD = new MyLocationListener();
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 0.5f, locListenD);
                     //txtLatitude.setText(Double.toString(l.getLatitude()));
