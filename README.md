@@ -34,4 +34,5 @@
 
 ## RESULTS
 
-<img scr="https://github.com/minheeson/SIMDA/blob/master/screenshots/simdaPanel.png" width="800"/>
+<img src="https://github.com/minheeson/SIMDA/blob/master/screenshots/simdaPanel.png" width="800"/>
+
