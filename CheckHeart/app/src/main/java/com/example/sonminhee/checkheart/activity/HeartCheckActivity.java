@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,7 +28,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.sonminhee.checkheart.util.BluetoothSerialClient;
 import com.example.sonminhee.checkheart.util.EcallDialog;
 import com.example.sonminhee.checkheart.util.GraphView;
 import com.example.sonminhee.checkheart.util.MyLocationListener;
@@ -48,8 +46,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
 
     private static final String TAG = "HeartCheckActivity";
-    // private static final String TAB_BT = "Bluetooth";
-    //private static final int REQUEST_ENABLE_BT = 100;
 
     Button btnAudioActivity;
     GraphView graphView;
@@ -71,44 +67,17 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     public Intent intent_dial;
     public MyLocationListener locListenD;
     Button btn; // TODO :: 이거 무슨 버튼이람?
-    Button btnTemp;
-
-    // TODO :: refactor var
-    private LinkedList<BluetoothDevice> mBluetoothDevices = new LinkedList<BluetoothDevice>();
-    private ArrayAdapter<String> mDeviceArrayAdapter;
-
-    private EditText mEditTextInput;
-    private TextView mTextView;
-    private Button mButtonSend;
-    private ProgressDialog mLoadingDialog;
-    private AlertDialog mDeviceListDialog;
-    private Menu mMenu;
-    private BluetoothSerialClient mClient;
-    // -- bluetooth
 
     static final int REQUEST_ENABLE_BT = 10;
     int mPariedDeviceCount = 0;
     Set<BluetoothDevice> mDevices;
-    // 폰의 블루투스 모듈을 사용하기 위한 오브젝트.
     BluetoothAdapter mBluetoothAdapter;
-    /**
-     * BluetoothDevice 로 기기의 장치정보를 알아낼 수 있는 자세한 메소드 및 상태값을 알아낼 수 있다.
-     * 연결하고자 하는 다른 블루투스 기기의 이름, 주소, 연결 상태 등의 정보를 조회할 수 있는 클래스.
-     * 현재 기기가 아닌 다른 블루투스 기기와의 연결 및 정보를 알아낼 때 사용.
-     */
-    BluetoothDevice mRemoteDevie;
-    // 스마트폰과 페어링 된 디바이스간 통신 채널에 대응 하는 BluetoothSocket
+    BluetoothDevice mRemoteDevice;
     BluetoothSocket mSocket = null;
-    OutputStream mOutputStream = null;
-    InputStream mInputStream = null;
-    String mStrDelimiter = "\n";
-    char mCharDelimiter = '\n';
-
-
-    Thread mWorkerThread = null;
-    byte[] readBuffer;
-    int readBufferPosition;
-
+    //    InputStream mInputStream = null;
+//
+//
+//    Thread mWorkerThread = null;
     TextView txtHeartbeat;
 
     private BluetoothSocket btSocket = null;
@@ -116,6 +85,15 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     private ConnectedThread mConnectedThread;
     final int handlerState = 0;
     private StringBuilder recDataString = new StringBuilder();
+
+    int[] points;
+
+    /**
+     * Normal 70~120mmHg
+     * Sleepy
+     * Excited
+     * Fatal ~70, 120~
+     */
 
 
     @Override
@@ -127,8 +105,8 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
         mContext = this;
 
         // TODO :: 유단비
-        int[] points = {5, 3, 7, 8, 4, 3, 3, 6, 4, 1};
-        graphView.setPoints(points, 1, 0, 10);
+        points = new int[10];
+        graphView.setPoints(points, 1, 80, 10);
         graphView.drawForBeforeDrawView();
 
         checkAuthority();
@@ -144,11 +122,17 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
                     String readMessage = (String) msg.obj;
                     recDataString.append(readMessage);
                     Log.i("TEST ", "TESTRTETE ++ " + recDataString);
-                    //Log.i("TEST ", "TESTRTETE :: INT :: " + (int)recDataString.charAt(0));
-                    int[] points2 = {5, 4,5,3, 7, 8, 5, 6, 7, 8};
-                    graphView.setPoints(points2, 1, 0, 10);
-                    graphView.drawForBeforeDrawView();
                     txtHeartbeat.setText("현재 심박수 : " + (int) readMessage.charAt(0));
+
+                    if (points.length < 10) {
+                        points[points.length] = (int) readMessage.charAt(0);
+                    } else {
+                        System.arraycopy(points, 1, points, 0, points.length - 1);
+                        points[points.length - 1] = (int) readMessage.charAt(0);
+                    }
+                    graphView.setPoints(points, 1, 80, 10);
+                    graphView.draw();
+                    graphView.invalidate();
 
                 }
             }
@@ -179,20 +163,18 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
      * @param selectedDeviceName
      */
     void connectToSelectedDevice(String selectedDeviceName) {
-        // BluetoothDevice 원격 블루투스 기기를 나타냄.
         Log.i(TAG, "TEST NAME :: " + selectedDeviceName);
-        mRemoteDevie = getDeviceFromBondedList(selectedDeviceName);
-        // java.util.UUID.fromString : 자바에서 중복되지 않는 Unique 키 생성.
+        mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);
         UUID uuid = java.util.UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
         try {
-            btSocket = createBluetoothSocket(mRemoteDevie);
+            btSocket = createBluetoothSocket(mRemoteDevice);
             Log.i("TEST ", "TESTRTETE :: btSocket :: ");
         } catch (IOException e) {
             Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_LONG).show();
         }
         try {
-            btSocket = createBluetoothSocket(mRemoteDevie);
+            btSocket = createBluetoothSocket(mRemoteDevice);
         } catch (IOException e) {
             Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_LONG).show();
         }
@@ -212,7 +194,7 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
         Log.i("TEST ", "TESTRTETE :: thread.start() :: ");
         mConnectedThread.start();
 
-        mConnectedThread.write("x");
+        //mConnectedThread.write("x");
 
 
     }
@@ -257,7 +239,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // startActivityForResult 를 여러번 사용할 땐 이런 식으로 switch 문을 사용하여 어떤 요청인지 구분하여 사용함.
         switch (requestCode) {
             case REQUEST_ENABLE_BT:
                 if (resultCode == RESULT_OK) {
@@ -270,17 +251,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-//    // TODO :: add bluetooth
-//    private void initBluetooth() {
-//        mClient = BluetoothSerialClient.getInstance();
-//
-//        if (mClient == null) {
-//            Toast.makeText(getApplicationContext(), "Cannot use the Bluetooth device.", Toast.LENGTH_SHORT).show();
-//            finish();
-//        }
-//    }
-
 
     /**
      *
@@ -320,13 +290,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
             if (!mBluetoothAdapter.isEnabled()) { // 블루투스 지원하며 비활성 상태인 경우.
                 Toast.makeText(getApplicationContext(), "현재 블루투스가 비활성 상태입니다.", Toast.LENGTH_LONG).show();
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                // REQUEST_ENABLE_BT : 블루투스 활성 상태의 변경 결과를 App 으로 알려줄 때 식별자로 사용(0이상)
-                /**
-                 startActivityForResult 함수 호출후 다이얼로그가 나타남
-                 "예" 를 선택하면 시스템의 블루투스 장치를 활성화 시키고
-                 "아니오" 를 선택하면 비활성화 상태를 유지 한다.
-                 선택 결과는 onActivityResult 콜백 함수에서 확인할 수 있다.
-                 */
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             } else // 블루투스 지원하며 활성 상태인 경우.
                 selectDevice();
@@ -407,9 +370,9 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         try {
-            mWorkerThread.interrupt(); // 데이터 수신 쓰레드 종료
-            mInputStream.close();
-            mSocket.close();
+            //mWorkerThread.interrupt();
+            //mInputStream.close();
+            //mSocket.close();
         } catch (Exception e) {
         }
 
@@ -442,12 +405,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     public void openDial() {
         intent_dial = new Intent(Intent.ACTION_CALL, Uri.parse("tel:01093493932"));
         startActivity(intent_dial);
-
-        String SMSText = "Latitude : " + txtLatitude.getText() + "\nLongitude : " + txtLongitude.getText();
-        /**
-         SmsManager sms = SmsManager.getDefault();
-         sms.sendTextMessage("01093493932", null, SMSText, null, null);
-         mCustomDialog.dismiss();*/
     }
 
 
@@ -473,7 +430,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
             }
 
         } catch (SecurityException e) {
-            // lets the user know there is a problem with the gps
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, RQ_ACCESS_FINE_LOCATION);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, RQ_ACCESS_COARSE_LOCATION);
             Log.d("GPS :: ", "disable");
@@ -491,14 +447,11 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
 
-        //creation of the connect thread
         public ConnectedThread(BluetoothSocket socket) {
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
 
             try {
-                //Create I/O streams for connection
-
 
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
@@ -518,12 +471,9 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
                     Log.i("TEST", "TESTRTETE ::  run() " + mmInStream.available());
 
-
                     bytes = mmInStream.read(buffer);
-                    Log.i("TEST", "TESTRTETE ::  bytes = " + bytes);//read bytes from input buffer
+                    Log.i("TEST", "TESTRTETE ::  bytes = " + bytes);
                     String readMessage = new String(buffer, 0, bytes);
-                    // Send the obtained bytes to the UI Activity via handler
-
 
                     Log.i("TEST", "TESTRTETE ::  readMSG ::  " + readMessage + "");
                     Log.i("TEST", "TESTRTETE ::  readMSG ::  " + (int) readMessage.charAt(0) + "");
@@ -535,13 +485,11 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-        //write method
         public void write(String input) {
-            byte[] msgBuffer = input.getBytes();           //converts entered String into bytes
+            byte[] msgBuffer = input.getBytes();
             try {
-                mmOutStream.write(msgBuffer);                //write bytes over BT connection via outstream
+                mmOutStream.write(msgBuffer);
             } catch (IOException e) {
-                //if you cannot write, close the application
                 Toast.makeText(getBaseContext(), "Connection Failure", Toast.LENGTH_LONG).show();
                 finish();
 

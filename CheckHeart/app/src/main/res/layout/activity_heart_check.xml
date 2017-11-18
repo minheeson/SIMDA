@@ -38,7 +38,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="현재 심박 수 : 92"
+            android:text="현재 심박수 : 92"
             android:textSize="20sp" />
 
         <!--<Button-->

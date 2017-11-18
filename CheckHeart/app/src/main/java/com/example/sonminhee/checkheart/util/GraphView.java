@@ -10,6 +10,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -26,6 +27,8 @@ public class GraphView extends View{
     private float mThickness;
     private int[] mPoints, mPointX, mPointY;
     private int mPointSize, mPointRadius, mLineColor, mUnit, mOrigin, mDivide;
+
+    static final String TAG = "GraphView";
 
     public GraphView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -56,11 +59,17 @@ public class GraphView extends View{
     }
 
     //그래프를 만든다
-    private void draw() {
+    public void draw() {
+        Log.i(TAG, " :: draw() :: ");
         Path path = new Path();
 
         int height = getHeight();
         int[] points = mPoints;
+
+//        for(int i=0; i<points.length; i++){
+//            Log.i(TAG, "data" + i +"_" + String.valueOf(points[i]));
+//        }
+
 
         //x축 점 사이의 거리
         float gapx = (float)getWidth() / points.length;
@@ -105,10 +114,13 @@ public class GraphView extends View{
     //그래프를 그린다(onCreate 등에서 호출시)
     public void drawForBeforeDrawView() {
         //뷰의 크기를 계산하여 그래프를 그리기 때문에 뷰가 실제로 만들어진 시점에서 함수를 호출해 준다
+        Log.i(TAG, " :: drawForBeforeDrawView() :: ");
+        //draw();
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 draw();
+                Log.i(TAG, " :: drawForBeforeDrawView() :: onGlobalLayout() ::");
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
                     getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -121,7 +133,7 @@ public class GraphView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        Log.i(TAG, " :: onDraw() :: ");
         //선을 그린다
         if(mLineShape != null)
             mLineShape.draw(canvas);
