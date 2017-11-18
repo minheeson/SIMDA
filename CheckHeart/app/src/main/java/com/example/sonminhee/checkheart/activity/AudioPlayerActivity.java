@@ -13,10 +13,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.sonminhee.checkheart.adapter.AudioAdapter;
 import com.example.sonminhee.checkheart.R;
@@ -26,6 +30,23 @@ import com.example.sonminhee.checkheart.R;
  */
 
 public class AudioPlayerActivity extends AppCompatActivity {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_heart_check:
+//                openHeartCheck();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.player_activity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private static final int STORAGE_PERMISSION = 1000;
     private int LOADER_ID = 1;
     private static final String TAG = "AudioPlayerActivity";
@@ -40,12 +61,17 @@ public class AudioPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_player);
 
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+
         init();
         checkAuthority();
     }
 
     private void init() {
-        mRecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mAdapter = new AudioAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
         layoutManager = new LinearLayoutManager(this);

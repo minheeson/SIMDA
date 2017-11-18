@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sonminhee.checkheart">
 
+    <uses-feature android:name="android.hardware.usb.host"/>
+
     <!-- media store permission -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -36,7 +38,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AudioPlayerActivity" />
+        <activity android:name=".activity.AudioPlayerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.HeartCheckActivity" />
+        </activity>
 
         <service
             android:name=".util.AudioService"
