@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -17,7 +19,7 @@ import com.example.sonminhee.checkheart.activity.HeartCheckActivity;
  * Created by sonminhee on 2017. 10. 11..
  */
 
-public class EcallDialog extends Dialog implements View.OnClickListener{
+public class EcallDialog extends Dialog implements View.OnClickListener {
 
     private TextView mTitleView;
     private TextView mContentView;
@@ -62,7 +64,9 @@ public class EcallDialog extends Dialog implements View.OnClickListener{
     }
 
     public EcallDialog(Context context, String title, String content) {
+
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
+
         this.mTitle = title;
         this.mContent = content;
         mHandler.sendEmptyMessage(0);
@@ -118,12 +122,13 @@ public class EcallDialog extends Dialog implements View.OnClickListener{
             case R.id.bt_right:
                 dismiss();
                 mHandler.removeMessages(0);
+                ((HeartCheckActivity) HeartCheckActivity.mContext).setAfterFatal();
                 break;
         }
     }
 
     public void openDial() {
-        ((HeartCheckActivity)HeartCheckActivity.mContext).openDial();
+        ((HeartCheckActivity) HeartCheckActivity.mContext).openDial();
     }
 
 }

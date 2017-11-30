@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,10 +22,11 @@
                 android:id="@+id/GraphView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                gyjmoble:lineColor="#0073cc"
+                android:background="#2B2B2B"
+                gyjmoble:lineColor="#73B678"
                 gyjmoble:lineThickness="2dp"
-                gyjmoble:pointColor="#ec4800"
-                gyjmoble:pointSize="8dp" />
+                gyjmoble:pointColor="#73B678"
+                gyjmoble:pointSize="4dp" />
 
         </LinearLayout>
 
@@ -35,26 +35,19 @@
             android:id="@+id/main_heartRate"
             android:layout_width="match_parent"
             android:layout_height="0px"
-            android:layout_weight="1"
             android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="현재 심박수 : 92"
             android:textSize="20sp" />
 
-        <!--<Button-->
-            <!--android:id="@+id/btnTemp"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="btn"/>-->
-
-        <!-- 사용자 상태 -->
         <ImageView
-            android:id="@+id/main_userStateImage"
+            android:id="@+id/imgStatus"
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_weight="5"
             android:background="@drawable/back"
-            android:src="@drawable/ic_status_fatal"
+            android:src="@drawable/ic_status_normal"
             android:text="TextView" />
 
         <TextView
@@ -69,54 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!--<TableRow-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/tv_Longitude"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Longitude" />-->
-
-                <!--<EditText-->
-                    <!--android:id="@+id/et_Longitude"-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:background="#f777"-->
-                    <!--android:editable="false"-->
-                    <!--android:textColor="#ffffff"-->
-                    <!--android:textSize="16px"-->
-                    <!--android:textStyle="bold" />-->
-            <!--</TableRow>-->
-
-            <!--<TableRow-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/tv_Latitude"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Latitude" />-->
-
-                <!--<EditText-->
-                    <!--android:id="@+id/et_Latitude"-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:background="#f777"-->
-                    <!--android:editable="false"-->
-                    <!--android:textColor="#ffffff"-->
-                    <!--android:textSize="16px"-->
-                    <!--android:textStyle="bold" />-->
-            <!--</TableRow>-->
         </TableLayout>
-
-        <Button
-            android:id="@+id/main_popup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ececec"
-            android:text="팝업(임시)"
-            android:textColor="@color/colorPrimary" />
 
         <Button
             android:id="@+id/btn_AudioActivity"
