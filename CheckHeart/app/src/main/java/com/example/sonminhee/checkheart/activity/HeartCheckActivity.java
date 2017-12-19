@@ -102,14 +102,19 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
         selectDevice();
 
-
+        final int[] test = {0};
         bluetoothIn = new Handler() {
             public void handleMessage(android.os.Message msg) {
+                test[0]++;
                 Log.i("TEST ", "TESTRTETE");
                 if (msg.what == handlerState) {
                     String readMessage = (String) msg.obj;
                     recDataString.append(readMessage);
                     txtHeartbeat.setText("현재 심박수 : " + (int) readMessage.charAt(0));
+
+                    if(test[0] == 90){
+                        imgStatus.setImageResource(R.drawable.ic_status_excited);
+                    }
 
                     if (points.length < 10) {
                         points[points.length] = (int) readMessage.charAt(0);
@@ -133,21 +138,21 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-
-                if (charSequence.length() >= 11 && Integer.parseInt(charSequence.subSequence(9, 11).toString()) < 70 && dialog == 1) {
-                    dialog = -1;
-                    Log.i("TEST", "TESTRTETE :: status fatal :: ");
-                    imgStatus.setImageResource(R.drawable.ic_status_fatal);
-
-
-                    mCustomDialog = new EcallDialog(HeartCheckActivity.this,
-                            "e-call서비스 호출",
-                            "심박수에 이상이 있습니다. \n e-call 서비스를 호출하겠습니까? \n");
-
-                    mCustomDialog.show();
-
-
-                }
+//
+//                if (charSequence.length() >= 11 && Integer.parseInt(charSequence.subSequence(9, 11).toString()) < 70 && dialog == 1) {
+//                    dialog = -1;
+//                    Log.i("TEST", "TESTRTETE :: status fatal :: ");
+//                    imgStatus.setImageResource(R.drawable.ic_status_fatal);
+//
+//
+//                    mCustomDialog = new EcallDialog(HeartCheckActivity.this,
+//                            "e-call서비스 호출",
+//                            "심박수에 이상이 있습니다. \n e-call 서비스를 호출하겠습니까? \n");
+//
+//                    mCustomDialog.show();
+//
+//
+//                }
 
             }
 
@@ -257,9 +262,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    /**
-     *
-     */
     // TODO :: 권한 체크 메소드 분리
     private void checkAuthority() {
         // OS가 M 이상일 경우 권한체크

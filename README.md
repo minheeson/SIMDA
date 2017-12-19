@@ -30,9 +30,15 @@
 
 <img src="https://github.com/minheeson/SIMDA/blob/master/screenshots/CircuitConfiguration.png" width="400"/>
 
+#### 2. 개발 내용
+
 
 
 ## RESULTS
+
+
+
+## PANEL
 
 <img src="https://github.com/minheeson/SIMDA/blob/master/screenshots/simdaPanel.png" width="800"/>
 

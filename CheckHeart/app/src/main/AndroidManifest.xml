@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sonminhee.checkheart">
 
-    <uses-feature android:name="android.hardware.usb.host"/>
+    <uses-feature android:name="android.hardware.usb.host" />
 
     <!-- media store permission -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -32,9 +32,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,13 +42,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.AudioPlayerActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.HeartCheckActivity" />
-        </activity>
+        <activity android:name=".activity.AudioPlayerActivity"></activity>
 
-        <activity android:name=".activity.HeartCheckActivity"/>
+        <!--<meta-data
+                android:value=".activity.HeartCheckActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                -->
+
+        <activity android:name=".activity.HeartCheckActivity" />
 
         <service
             android:name=".util.AudioService"

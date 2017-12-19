@@ -31,6 +31,12 @@ import com.example.sonminhee.checkheart.R;
 
 public class AudioPlayerActivity extends AppCompatActivity {
     @Override
+    public void onBackPressed() {
+        Log.i("TESTTEST", "TEST backPressed() :: ");
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_heart_check:
