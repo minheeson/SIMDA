@@ -20,7 +20,7 @@ import com.example.sonminhee.checkheart.R;
  * Created by yoodanbee on 2017. 10. 11..
  */
 
-public class GraphView extends View{
+public class GraphView extends View {
     private ShapeDrawable mLineShape;
     private Paint mPointPaint;
 
@@ -42,7 +42,7 @@ public class GraphView extends View{
 
         mPointPaint = new Paint();
         mPointPaint.setColor(types.getColor(R.styleable.GraphView_pointColor, Color.BLACK));
-        mPointSize = (int)types.getDimension(R.styleable.GraphView_pointSize, 10);
+        mPointSize = (int) types.getDimension(R.styleable.GraphView_pointSize, 10);
         mPointRadius = mPointSize / 2;
 
         mLineColor = types.getColor(R.styleable.GraphView_lineColor, Color.BLACK);
@@ -66,15 +66,8 @@ public class GraphView extends View{
         int height = getHeight();
         int[] points = mPoints;
 
-//        for(int i=0; i<points.length; i++){
-//            Log.i(TAG, "data" + i +"_" + String.valueOf(points[i]));
-//        }
+        float gapx = (float) getWidth() / points.length;
 
-
-        //x축 점 사이의 거리
-        float gapx = (float)getWidth() / points.length;
-
-        //y축 단위 사이의 거리
         float gapy = (height - mPointSize) / mDivide;
 
         float halfgab = gapx / 2;
@@ -83,22 +76,19 @@ public class GraphView extends View{
         mPointX = new int[length];
         mPointY = new int[length];
 
-        for(int i = 0 ; i < length ; i++) {
-            //점 좌표를 구한다
-            int x = (int)(halfgab + (i * gapx));
-            int y = (int)(height - mPointRadius - (((points[i] / mUnit) - mOrigin) * gapy));
+        for (int i = 0; i < length; i++) {
+            int x = (int) (halfgab + (i * gapx));
+            int y = (int) (height - mPointRadius - (((points[i] / mUnit) - mOrigin) * gapy));
 
             mPointX[i] = x;
             mPointY[i] = y;
 
-            //선을 그린다
-            if(i == 0)
+            if (i == 0)
                 path.moveTo(x, y);
             else
                 path.lineTo(x, y);
         }
 
-        //그려진 선으로 shape을 만든다
         ShapeDrawable shape = new ShapeDrawable(new PathShape(path, 1, 1));
         shape.setBounds(0, 0, 1, 1);
 
@@ -111,9 +101,7 @@ public class GraphView extends View{
         mLineShape = shape;
     }
 
-    //그래프를 그린다(onCreate 등에서 호출시)
     public void drawForBeforeDrawView() {
-        //뷰의 크기를 계산하여 그래프를 그리기 때문에 뷰가 실제로 만들어진 시점에서 함수를 호출해 준다
         Log.i(TAG, " :: drawForBeforeDrawView() :: ");
         //draw();
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -133,13 +121,10 @@ public class GraphView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.i(TAG, " :: onDraw() :: ");
-        //선을 그린다
-        if(mLineShape != null)
+        if (mLineShape != null)
             mLineShape.draw(canvas);
 
-        //점을 그린다
-        if(mPointX != null && mPointY != null) {
+        if (mPointX != null && mPointY != null) {
             int length = mPointX.length;
             for (int i = 0; i < length; i++)
                 canvas.drawCircle(mPointX[i], mPointY[i], mPointRadius, mPointPaint);

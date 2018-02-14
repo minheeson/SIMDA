@@ -41,9 +41,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
 
     private static final String TAG = "HeartCheckActivity";
-    private static final int RQ_ACCESS_FINE_LOCATION = 1;
-    private static final int RQ_ACCESS_COARSE_LOCATION = 2;
-    private static final int RQ_CALL_PHONE = 3;
     static final int REQUEST_ENABLE_BT = 10;
 
 
@@ -106,13 +103,12 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
         bluetoothIn = new Handler() {
             public void handleMessage(android.os.Message msg) {
                 test[0]++;
-                Log.i("TEST ", "TESTRTETE");
                 if (msg.what == handlerState) {
                     String readMessage = (String) msg.obj;
                     recDataString.append(readMessage);
                     txtHeartbeat.setText("현재 심박수 : " + (int) readMessage.charAt(0));
 
-                    if(test[0] == 90){
+                    if (test[0] == 90) {
                         imgStatus.setImageResource(R.drawable.ic_status_excited);
                     }
 
@@ -138,22 +134,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-//
-//                if (charSequence.length() >= 11 && Integer.parseInt(charSequence.subSequence(9, 11).toString()) < 70 && dialog == 1) {
-//                    dialog = -1;
-//                    Log.i("TEST", "TESTRTETE :: status fatal :: ");
-//                    imgStatus.setImageResource(R.drawable.ic_status_fatal);
-//
-//
-//                    mCustomDialog = new EcallDialog(HeartCheckActivity.this,
-//                            "e-call서비스 호출",
-//                            "심박수에 이상이 있습니다. \n e-call 서비스를 호출하겠습니까? \n");
-//
-//                    mCustomDialog.show();
-//
-//
-//                }
-
             }
 
             @Override
@@ -218,7 +198,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
 
         return device.createRfcommSocketToServiceRecord(BTMODULEUUID);
-        //creates secure outgoing connecetion with BT device using UUID
     }
 
 
@@ -327,11 +306,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    /**
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -384,21 +358,16 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
     private class ConnectedThread extends Thread {
 
         private final InputStream mmInStream;
-        private final OutputStream mmOutStream;
 
         public ConnectedThread(BluetoothSocket socket) {
             InputStream tmpIn = null;
-            OutputStream tmpOut = null;
 
             try {
-
                 tmpIn = socket.getInputStream();
-                tmpOut = socket.getOutputStream();
             } catch (IOException e) {
             }
 
             mmInStream = tmpIn;
-            mmOutStream = tmpOut;
         }
 
         public void run() {
@@ -415,16 +384,6 @@ public class HeartCheckActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-        public void write(String input) {
-            byte[] msgBuffer = input.getBytes();
-            try {
-                mmOutStream.write(msgBuffer);
-            } catch (IOException e) {
-                Toast.makeText(getBaseContext(), "Connection Failure", Toast.LENGTH_LONG).show();
-                finish();
-
-            }
-        }
     }
 
 }
